@@ -1,105 +1,104 @@
-import { createClient } from "@/lib/supabase/server";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+"use client";
+
+import { useEffect, useState } from "react";
 import { formatCurrency } from "@/lib/utils";
-import { Search, TrendingUp, TrendingDown } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-export default async function MarketPage({
-  searchParams,
-}: {
-  searchParams: { search?: string };
-}) {
-  const search = searchParams.search || "";
+export default function MarketPage() {
+  const [rows, setRows] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const supabase = await createClient();
-  let query = supabase
-    .from("players")
-    .select(`
-      *,
-      clubs(name),
-      player_market_value_history(value, changed_at)
-    `)
-    .eq("is_active", true)
-    .order("market_value", { ascending: false })
-    .limit(50);
+  useEffect(() => {
+    const fetchMarket = async () => {
+      try {
+        const url = new URL(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/players`);
+        url.searchParams.set("select", "full_name,position,market_value,clubs(name)");
+        url.searchParams.set("is_active", "eq.true");
+        url.searchParams.set("order", "market_value.desc");
+        url.searchParams.set("limit", "50");
 
-  if (search) {
-    query = query.ilike("full_name", `%${search}%`);
-  }
+        const res = await fetch(url.toString(), {
+          headers: {
+            apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!}`,
+          },
+        });
+        const data = await res.json();
+        setRows((data || []).map((p: any) => ({
+          player: p.full_name,
+          club: p.clubs?.name || "—",
+          position: p.position,
+          value: formatCurrency(p.market_value || 0),
+        })));
+      } catch (e) {
+        console.error("Fetch error:", e);
+        setRows([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const { data: players } = await query;
+    fetchMarket();
+  }, []);
 
   return (
     <div className="space-y-8">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-vibowy-primary flex items-center justify-center">
-            <TrendingUp className="w-5 h-5 text-white" />
+            <span className="w-5 h-5 text-white">💰</span>
           </div>
           <div>
             <h1 className="text-2xl font-bold text-text-primary">Рыночные Kosten</h1>
             <p className="text-text-muted text-sm">История изменений и динамика стоимости игроков</p>
           </div>
         </div>
-
-        <form className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto" action="" method="get">
-          <div className="relative flex-grow">
-            <Search className="absolute left-3 top-3 w-4 h-4 text-text-muted" />
-            <Input placeholder="Поиск игрока..." name="search" defaultValue={search} className="pl-10" />
-          </div>
-          <Button type="submit">Искать</Button>
-        </form>
+        <div className="relative flex-grow lg:w-96">
+          <input type="text" placeholder="Искать" className="w-full pl-10 pr-4 py-2 bg-vibovy-surface border border-vibovy-border rounded-lg text-sm focus:outline-none focus:border-vibowy-primary" />
+        </div>
       </div>
 
-      <Card>
+      {loading && (
+        <div className="col-span-full flex flex-col items-center justify-center py-20 text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-vibowy-primary"></div>
+          <p className="text-text-muted mt-4">Загрузка данных…</p>
+        </div>
+      )}
+
+      {!loading && (
         <div className="overflow-x-auto">
-          <table className="data-table w-full">
+          <table className="w-full text-left border-collapse">
             <thead>
-              <tr>
-                <th>Игрок</th>
-                <th className="text-center">Клуб</th>
-                <th className="text-center">Позиция</th>
-                <th className="text-right">Стоимость</th>
-                <th className="text-right">Изменение</th>
-                <th className="text-center">Обновлено</th>
+              <tr className="border-b border-vibovy-border">
+                <th className="pb-3 text-text-secondary text-sm font-medium">Игрок</th>
+                <th className="pb-3 text-text-secondary text-sm font-medium">Клуб</th>
+                <th className="pb-3 text-text-secondary text-sm font-medium">Позиция</th>
+                <th className="pb-3 text-text-secondary text-sm font-medium">Стоимость</th>
+                <th className="pb-3 text-text-secondary text-sm font-medium">Изменение</th>
+                <th className="pb-3 text-text-secondary text-sm font-medium">Обновлено</th>
               </tr>
             </thead>
             <tbody>
-              {(players || []).map((player: any) => {
-                const history = player.player_market_value_history || [];
-                const latest = history.length > 0 ? history[history.length - 1] : null;
-                const change = latest && player.market_value ? ((player.market_value - latest.value) / latest.value) * 100 : 0;
-                return (
-                  <tr key={player.id}>
-                    <td className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-vibovy-surface flex items-center justify-center text-xs font-bold text-text-secondary overflow-hidden">
-                        {player.full_name.charAt(0)}
-                      </div>
-                      <div>
-                        <p className="text-text-primary font-medium">{player.full_name}</p>
-                        <p className="text-xs text-text-muted">{player.clubs?.name || "—"}</p>
-                      </div>
-                    </td>
-                    <td className="text-center text-text-secondary">{player.position}</td>
-                    <td className="text-right font-mono text-text-primary">{formatCurrency(player.market_value || 0)}</td>
-                    <td className="text-right">
-                      <span className={`font-medium text-xs ${change > 0 ? "text-emerald-400" : change < 0 ? "text-red-400" : "text-text-muted"}`}>
-                        {change > 0 ? "+" : ""}{change.toFixed(1)}%
-                      </span>
-                    </td>
-                    <td className="text-center text-xs text-text-muted">
-                      {latest ? new Date(latest.changed_at).toLocaleDateString("ru-RU") : "—"}
-                    </td>
-                  </tr>
-                );
-              })}
+              {rows.map((r, i) => (
+                <tr key={i} className="border-b border-vibovy-border/50">
+                  <td className="py-3 text-text-primary">{r.player}</td>
+                  <td className="py-3 text-text-secondary">{r.club}</td>
+                  <td className="py-3 text-text-secondary">{r.position}</td>
+                  <td className="py-3 text-text-primary font-mono">{r.value}</td>
+                  <td className="py-3 text-emerald-400 font-medium">▲ 0.0%</td>
+                  <td className="py-3 text-text-secondary">Сегодня</td>
+                </tr>
+              ))}
+              {rows.length === 0 && (
+                <tr>
+                  <td colSpan="6" className="py-10 text-center text-text-secondary">Данных нет</td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
-      </Card>
+      )}
     </div>
   );
 }

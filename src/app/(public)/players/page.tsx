@@ -1,4 +1,6 @@
-import { createClient } from "@/lib/supabase/server";
+"use client";
+
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -8,32 +10,44 @@ import { formatCurrency, POSITIONS } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
-export default async function PlayersPage({
+export default function PlayersPage({
   searchParams,
 }: {
   searchParams: { search?: string; position?: string };
 }) {
+  const [players, setPlayers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const search = searchParams.search || "";
   const position = searchParams.position || "";
 
-  const supabase = await createClient();
-  let query = supabase
-    .from("players")
-    .select(`
-      *,
-      clubs(name, logo_url)
-    `)
-    .eq("is_active", true)
-    .order("market_value", { ascending: false });
+  useEffect(() => {
+    const fetchPlayers = async () => {
+      try {
+        const url = new URL(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/players`);
+        url.searchParams.set("select", "*,clubs(name, logo_url)");
+        url.searchParams.set("is_active", "eq.true");
+        url.searchParams.set("order", "market_value.desc");
+        if (search) url.searchParams.set("full_name", `ilike.%${search}%`);
+        if (position) url.searchParams.set("position", `eq.${position}`);
 
-  if (search) {
-    query = query.ilike("full_name", `%${search}%`);
-  }
-  if (position) {
-    query = query.eq("position", position);
-  }
+        const res = await fetch(url.toString(), {
+          headers: {
+            apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!}`,
+          },
+        });
+        const data = await res.json();
+        setPlayers(data || []);
+      } catch (e) {
+        console.error("Fetch error:", e);
+        setPlayers([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const { data: players } = await query;
+    fetchPlayers();
+  }, [search, position]);
 
   return (
     <div className="space-y-8">
@@ -48,12 +62,12 @@ export default async function PlayersPage({
           </div>
         </div>
 
-        <form className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto" action="" method="get">
+        <form className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto" onSubmit={(e) => e.preventDefault()}>
           <div className="relative flex-grow">
             <Search className="absolute left-3 top-3 w-4 h-4 text-text-muted" />
-            <Input placeholder="Поиск игроков..." name="search" defaultValue={search} className="pl-10" />
+            <Input placeholder="Поиск игроков..." defaultValue={search} className="pl-10" />
           </div>
-          <Select name="position" defaultValue={position || undefined} className="w-auto min-w-[200px]">
+          <Select defaultValue={position || undefined} className="w-auto min-w-[200px]">
             <option value="">Все позиции</option>
             {POSITIONS.map((pos) => (
               <option key={pos.value} value={pos.value}>{pos.label}</option>
@@ -63,46 +77,55 @@ export default async function PlayersPage({
         </form>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {(players || []).map((player: any) => (
-          <Card key={player.id} className="cursor-pointer group" onClick={() => {}}>
-            <div className="relative h-48 overflow-hidden">
-              <div className="w-full h-full bg-vibovy-surface flex items-center justify-center">
-                <div className="w-16 h-16 rounded-full bg-vibowy-primary/20 flex items-center justify-center text-vibowy-primary font-bold text-2xl">
-                  {player.full_name.charAt(0)}
-                </div>
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-bold text-text-primary">{player.full_name}</h3>
-                    <p className="text-xs text-text-secondary">{player.age} лет · {player.nationality || "—"}</p>
+      {loading && (
+        <div className="col-span-full flex flex-col items-center justify-center py-20 text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-vibowy-primary"></div>
+          <p className="text-text-muted mt-4">Загрузка игроков…</p>
+        </div>
+      )}
+
+      {!loading && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {players.map((player: any) => (
+            <Card key={player.id} className="cursor-pointer group" onClick={() => {}}>
+              <div className="relative h-48 overflow-hidden">
+                <div className="w-full h-full bg-vibovy-surface flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-vibowy-primary/20 flex items-center justify-center text-vibowy-primary font-bold text-2xl">
+                    {player.full_name.charAt(0)}
                   </div>
-                  <span className="text-xs font-bold text-text-secondary bg-vibovy-surface border-vibovy-border px-2 py-0.5 rounded">
-                    {player.position}
-                  </span>
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-bold text-text-primary">{player.full_name}</h3>
+                      <p className="text-xs text-text-secondary">{player.age} лет · {player.nationality || "—"}</p>
+                    </div>
+                    <span className="text-xs font-bold text-text-secondary bg-vibovy-surface border-vibovy-border px-2 py-0.5 rounded">
+                      {player.position}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="p-4">
-              <p className="text-sm text-text-secondary mb-3">{player.clubs?.name || "Без клуба"}</p>
-              <div className="flex items-baseline gap-1">
-                <span className="text-lg font-bold text-text-primary">{formatCurrency(player.market_value || 0)}</span>
-                <span className="text-xs text-emerald-400 font-medium">▲ 0.0%</span>
+              <div className="p-4">
+                <p className="text-sm text-text-secondary mb-3">{player.clubs?.name || "Без клуба"}</p>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-lg font-bold text-text-primary">{formatCurrency(player.market_value || 0)}</span>
+                  <span className="text-xs text-emerald-400 font-medium">▲ 0.0%</span>
+                </div>
               </div>
+            </Card>
+          ))}
+          {players.length === 0 && (
+            <div className="col-span-full flex flex-col items-center justify-center py-20 text-center">
+              <div className="w-16 h-16 rounded-full bg-vibovy-surface flex items-center justify-center mb-4">
+                <Users className="w-8 h-8 text-text-muted" />
+              </div>
+              <h3 className="text-lg font-bold text-text-primary mb-2">Игроки не найдены</h3>
+              <p className="text-text-muted max-w-xs">Попробуйте изменить параметры поиска.</p>
             </div>
-          </Card>
-        ))}
-        {(players?.length || 0) === 0 && (
-          <div className="col-span-full flex flex-col items-center justify-center py-20 text-center">
-            <div className="w-16 h-16 rounded-full bg-vibovy-surface flex items-center justify-center mb-4">
-              <Users className="w-8 h-8 text-text-muted" />
-            </div>
-            <h3 className="text-lg font-bold text-text-primary mb-2">Игроки не найдены</h3>
-            <p className="text-text-muted max-w-xs">Попробуйте изменить параметры поиска.</p>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
