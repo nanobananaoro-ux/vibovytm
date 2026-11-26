@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  /* VIBOVYTM Design System — тёмно-синий как Transfermarkt */
-  --color-background: #0F172A;
+  /* VIBOVYTM Design System — тёмно-синий первичный цвет (как логотип VIBE™) */
+  --color-background: #0B1120;
   --color-foreground: #F8FAFC;
 
-  /* Brand colors */
-  --color-vibovy-dark: #0F172A;
-  --color-vibovy-surface: #1E293B;
-  --color-vibovy-surface-hover: #334155;
-  --color-vibowy-primary: #3B82F6;
-  --color-vibowy-primary-hover: #2563EB;
+  /* Brand colors — тёмно-синий Transfermarkt-style */
+  --color-vibovy-dark: #0B1120;
+  --color-vibovy-primary: #1E3A8A;
+  --color-vibovy-primary-hover: #1E40AF;
+  --color-vibovy-surface: #151E2E;
+  --color-vibovy-surface-hover: #1F2A3E;
   --color-vibowy-accent-green: #00FF00;
   --color-vibowy-accent-red: #FF0000;
 
@@ -20,8 +20,8 @@
   --color-text-muted: #64748B;
 
   /* Borders */
-  --color-border: #334155;
-  --color-border-hover: #475569;
+  --color-border: #1E293B;
+  --color-border-hover: #334155;
 
   /* Status colors */
   --color-success: #10B981;
@@ -51,6 +51,7 @@ body {
   color: var(--color-foreground);
   font-family: var(--font-sans);
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -64,14 +65,14 @@ h1, h2, h3, h4, h5, h6 {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #0F172A;
+  background: #0B1120;
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #1E293B;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #334155;
 }
 
 /* Utility animations */
@@ -111,7 +112,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .data-table th {
-  background: #1E293B;
+  background: #151E2E;
   color: #94A3B8;
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -119,22 +120,22 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   padding: 0.75rem 1rem;
   text-align: left;
-  border-bottom: 1px solid #334155;
+  border-bottom: 1px solid #1E293B;
 }
 
 .data-table td {
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid #1E293B;
+  border-bottom: 1px solid #151E2E;
   color: #F8FAFC;
 }
 
 .data-table tr:hover td {
-  background: #1E293B;
+  background: #151E2E;
 }
 
 /* Skeleton loader */
 .skeleton {
-  background: linear-gradient(90deg, #1E293B 25%, #334155 50%, #1E293B 75%);
+  background: linear-gradient(90deg, #151E2E 25%, #1E293B 50%, #151E2E 75%);
   background-size: 200% 100%;
   animation: skeleton 1.5s infinite;
   border-radius: 0.375rem;
@@ -143,4 +144,20 @@ h1, h2, h3, h4, h5, h6 {
 @keyframes skeleton {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  body {
+    font-size: 14px;
+  }
+  
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
 }

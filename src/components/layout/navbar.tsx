@@ -27,14 +27,16 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-vibovy-border bg-vibovy-dark/80 backdrop-blur-md">
+    <nav className="sticky top-0 z-50 border-b border-vibovy-border bg-vibovy-dark/95 backdrop-blur-md">
       <div className="flex items-center justify-between h-16 px-4 lg:px-8">
         {/* Logo */}
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-vibowy-primary flex items-center justify-center shadow-lg shadow-blue-500/40">
-              <span className="text-xs font-bold">V</span>
-            </div>
+            <img
+              src="/logo.png"
+              alt="VIBOVYTM"
+              className="w-9 h-9 rounded-lg object-contain"
+            />
             <span className="font-bold text-xl tracking-tight text-text-primary">
               VIBOVYTM
             </span>
@@ -47,7 +49,7 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="flex items-center gap-2 text-text-secondary hover:text-vibowy-primary transition-colors"
+              className="flex items-center gap-2 text-text-secondary hover:text-vibovy-primary transition-colors"
             >
               <link.icon className="w-4 h-4" />
               {link.label}
@@ -55,7 +57,7 @@ export function Navbar() {
           ))}
           <Link
             href="/admin/login"
-            className="flex items-center gap-2 text-text-secondary hover:text-red-400 transition-colors"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-text-secondary hover:bg-vibovy-surface hover:text-vibowy-primary transition-colors border border-transparent hover:border-vibovy-primary/50"
           >
             <LogIn className="w-4 h-4" />
             Админ
@@ -72,7 +74,7 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-vibovy-border bg-vibovy-dark">
+        <div className="lg:hidden border-t border-vibovy-border bg-vibovy-dark/95 backdrop-blur-md">
           <div className="px-4 py-4 space-y-4">
             {NAV_LINKS.map((link) => (
               <Link
@@ -89,7 +91,7 @@ export function Navbar() {
               <Link
                 href="/admin/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-3 px-3 py-2.5 text-text-secondary hover:text-red-400 hover:bg-vibovy-surface rounded-lg transition-colors"
+                className="flex items-center gap-3 px-3 py-2.5 text-text-secondary hover:bg-vibovy-surface hover:text-vibowy-primary rounded-lg transition-colors border border-transparent hover:border-vibovy-primary/50"
               >
                 <LogIn className="w-5 h-5" />
                 Админ панель

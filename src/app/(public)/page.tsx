@@ -27,19 +27,32 @@ export default function HomePage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative h-64 rounded-2xl bg-vibowy-primary/10 border border-vibowy-primary/20 overflow-hidden flex items-center justify-between p-8 lg:p-12 mb-4"
+        className="relative h-64 lg:h-80 rounded-2xl bg-vibovy-primary/10 border border-vibovy-primary/20 overflow-hidden flex items-center justify-between p-6 lg:p-8 mb-4"
       >
-        <div className="z-10">
-          <h1 className="text-3xl lg:text-5xl font-bold text-text-primary tracking-tight mb-4">
-            Футбольная аналитика<br />
-            <span className="text-vibowy-primary">ФТКЛ и ИРФФ</span>
-          </h1>
-          <p className="text-text-secondary text-lg max-w-md">
-            Профессиональная платформа для анализа игроков, клубов, лиг и рыночных стоимостей.
-          </p>
-          <div className="flex gap-3 mt-6">
-            <Button size="lg">Игроки</Button>
-            <a href="/clubs"><Button variant="outline" size="lg">Клубы</Button></a>
+        <div className="z-10 flex flex-col lg:flex-row lg:items-start justify-between gap-6 lg:gap-0 w-full">
+          <div className="z-10 flex-1">
+            <div className="flex items-center gap-2 mb-4">
+              <img src="/logo.png" alt="VIBOVYTM" className="w-8 h-8 rounded-lg object-contain" />
+              <span className="font-bold text-xl tracking-tight text-text-primary">VIBOVYTM</span>
+            </div>
+            <h1 className="text-3xl lg:text-5xl font-bold text-text-primary tracking-tight mb-4 leading-tight">
+              Футбольная аналитика<br />
+              <span className="text-vibovy-primary">ФТКЛ и ИРФФ</span>
+            </h1>
+            <p className="text-text-secondary text-lg max-w-md">
+              Профессиональная платформа для анализа игроков, клубов, лиг и рыночных стоимостей.
+            </p>
+            <div className="flex flex-wrap gap-3 mt-6">
+              <Link href="/players" className="flex items-center justify-center gap-2 px-6 py-3 bg-vibovy-primary text-white rounded-lg text-sm font-medium hover:bg-vibowy-primary-hover transition-colors w-full sm:w-auto">
+                Игроки <ArrowRight className="w-3 h-3" />
+              </Link>
+              <Link href="/clubs" className="flex items-center justify-center gap-2 px-6 py-3 border border-vibovy-border text-text-secondary rounded-lg text-sm font-medium hover:bg-vibovy-surface hover:text-vibowy-primary transition-colors w-full sm:w-auto">
+                Клубы
+              </Link>
+            </div>
+          </div>
+          <div className="hidden lg:flex items-center justify-center">
+            <img src="/logo.png" alt="VIBOVYTM" className="w-24 h-24 rounded-2xl object-contain opacity-20" />
           </div>
         </div>
       </motion.div>
@@ -55,7 +68,7 @@ export default function HomePage() {
               <p className="text-text-muted text-sm uppercase tracking-wider font-medium">Игроков в базе</p>
               <p className="text-2xl font-bold text-text-primary">1,247</p>
             </div>
-            <div className="w-10 h-10 rounded-lg bg-blue-900/30 flex items-center justify-center text-blue-400">
+            <div className="w-10 h-10 rounded-lg bg-vibovy-primary/20 flex items-center justify-center text-vibovy-primary">
               <Users className="w-5 h-5" />
             </div>
           </div>
@@ -70,7 +83,7 @@ export default function HomePage() {
               <p className="text-text-muted text-sm uppercase tracking-wider font-medium">Клубов</p>
               <p className="text-2xl font-bold text-text-primary">56</p>
             </div>
-            <div className="w-10 h-10 rounded-lg bg-emerald-900/30 flex items-center justify-center text-emerald-400">
+            <div className="w-10 h-10 rounded-lg bg-vibovy-primary/20 flex items-center justify-center text-vibovy-primary">
               <Trophy className="w-5 h-5" />
             </div>
           </div>
@@ -85,7 +98,7 @@ export default function HomePage() {
               <p className="text-text-muted text-sm uppercase tracking-wider font-medium">Лиг</p>
               <p className="text-2xl font-bold text-text-primary">4</p>
             </div>
-            <div className="w-10 h-10 rounded-lg bg-purple-900/30 flex items-center justify-center text-purple-400">
+            <div className="w-10 h-10 rounded-lg bg-vibovy-primary/20 flex items-center justify-center text-vibovy-primary">
               <Mail className="w-5 h-5" />
             </div>
           </div>
@@ -95,7 +108,7 @@ export default function HomePage() {
       <section>
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-text-primary">Самые дорогие игроки</h2>
-          <Link href="/players" className="text-sm text-vibowy-primary hover:text-blue-400 font-medium flex items-center gap-1">
+          <Link href="/players" className="text-sm text-vibovy-primary hover:text-vibowy-primary-hover font-medium flex items-center gap-1">
             Все игроки <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
@@ -104,7 +117,7 @@ export default function HomePage() {
             <Card key={player.id} className="cursor-pointer group" onClick={() => {}}>
               <div className="relative h-48 overflow-hidden">
                 <div className="w-full h-full bg-vibovy-surface flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-vibowy-primary/20 flex items-center justify-center text-vibowy-primary font-bold text-2xl">
+                  <div className="w-16 h-16 rounded-full bg-vibovy-primary/20 flex items-center justify-center text-vibovy-primary font-bold text-2xl">
                     {player.full_name.charAt(0)}
                   </div>
                 </div>
@@ -167,8 +180,8 @@ export default function HomePage() {
               {topClubs.map((club) => (
                 <Card key={club.id} className="cursor-pointer group" onClick={() => {}}>
                   <div className="h-32 overflow-hidden border-b border-vibovy-border">
-                    <div className="w-full h-full bg-vibowy-primary/10 flex items-center justify-center">
-                      <div className="w-20 h-20 rounded-full bg-vibowy-primary flex items-center justify-center text-white font-bold text-3xl">
+                    <div className="w-full h-full bg-vibovy-primary/10 flex items-center justify-center">
+                      <div className="w-20 h-20 rounded-full bg-vibovy-primary flex items-center justify-center text-white font-bold text-3xl">
                         {club.name.charAt(0)}
                       </div>
                     </div>
@@ -191,7 +204,7 @@ export default function HomePage() {
       <section>
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-text-primary">Турнирная таблица</h2>
-          <Link href="/leagues" className="text-sm text-vibowy-primary hover:text-blue-400 font-medium flex items-center gap-1">
+          <Link href="/leagues" className="text-sm text-vibovy-primary hover:text-vibowy-primary-hover font-medium flex items-center gap-1">
             Все лиги <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
@@ -213,10 +226,10 @@ export default function HomePage() {
               </thead>
               <tbody>
                 {[1, 2, 3, 4, 5].map((i) => (
-                  <tr key={i} className={i <= 3 ? "bg-vibowy-primary/5" : ""}>
-                    <td className="font-bold text-vibowy-primary">{i}</td>
+                  <tr key={i} className={i <= 3 ? "bg-vibovy-primary/5" : ""}>
+                    <td className="font-bold text-vibovy-primary">{i}</td>
                     <td className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-vibowy-primary/20 flex items-center justify-center text-vibowy-primary text-xs font-bold">
+                      <div className="w-6 h-6 rounded-full bg-vibovy-primary/20 flex items-center justify-center text-vibovy-primary text-xs font-bold">
                         {String.fromCharCode(65 + i)}
                       </div>
                       <span className="text-text-primary">Клуб {i}</span>
@@ -239,7 +252,7 @@ export default function HomePage() {
       <section>
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-text-primary">Главные новости</h2>
-          <Link href="/news" className="text-sm text-vibowy-primary hover:text-blue-400 font-medium flex items-center gap-1">
+          <Link href="/news" className="text-sm text-vibovy-primary hover:text-vibowy-primary-hover font-medium flex items-center gap-1">
             Все новости <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
@@ -247,20 +260,18 @@ export default function HomePage() {
           {[1, 2, 3].map((i) => (
             <Card key={i} className="cursor-pointer group" onClick={() => {}}>
               <div className="h-40 overflow-hidden mb-4">
-                <div className="w-full h-full bg-vibowy-primary/10 flex items-center justify-center">
-                  <Mail className="w-12 h-12 text-vibowy-primary/30" />
+                <div className="w-full h-full bg-vibovy-primary/10 flex items-center justify-center">
+                  <Mail className="w-12 h-12 text-vibovy-primary/30" />
                 </div>
               </div>
               <Badge variant="outline" className="text-xs mb-3">
                 {i === 1 ? "Трансфер" : i === 2 ? "Новость" : "Интервью"}
               </Badge>
-              <h3 className="font-bold text-text-primary mb-2">Новость #{i} VIBOVYTM</h3>
+              <h3 className="font-bold text-text-primary mb-2 group-hover:text-vibovy-primary transition-colors">Новость #{i} VIBOVYTM</h3>
               <p className="text-text-secondary text-sm mb-3">Описание новости о футбольном событии в лиге ФТКЛ или ИРФФ.</p>
               <div className="flex items-center justify-between">
                 <span className="text-xs text-text-muted">25 нояб. 2026</span>
-                <Link href={`/news/${i}`} className="text-xs text-vibowy-primary font-medium hover:underline">
-                  Читать
-                </Link>
+                <Link href={`/news/${i}`} className="text-xs text-vibovy-primary font-medium hover:underline">Читать</Link>
               </div>
             </Card>
           ))}

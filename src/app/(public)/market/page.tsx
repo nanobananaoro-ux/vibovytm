@@ -93,7 +93,7 @@ export default function MarketPage() {
               ))}
               {rows.length === 0 && (
                 <tr>
-                  <td colSpan="6" className="py-10 text-center text-text-secondary">Данных нет</td>
+                  <td colSpan={6} className="py-10 text-center text-text-secondary">Данных нет</td>
                 </tr>
               )}
             </tbody>
