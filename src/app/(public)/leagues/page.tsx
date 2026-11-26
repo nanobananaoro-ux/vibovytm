@@ -1,0 +1,69 @@
+import { createClient } from "@/lib/supabase/server";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Search, Trophy } from "lucide-react";
+import Link from "next/link";
+
+export const dynamic = "force-dynamic";
+
+export default async function LeaguesPage() {
+  const supabase = await createClient();
+  const { data: leagues } = await supabase
+    .from("leagues")
+    .select("*")
+    .eq("is_active", true)
+    .order("tier");
+
+  return (
+    <div className="space-y-8">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-vibowy-primary flex items-center justify-center">
+            <Trophy className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-text-primary">Лиги</h1>
+            <p className="text-text-muted text-sm">Турнирные таблицы, команды и статистика</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {(leagues || []).map((league: any) => (
+          <Card key={league.id} className="cursor-pointer group" onClick={() => {}}>
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-vibowy-primary flex items-center justify-center text-white font-bold">
+                    {league.name.charAt(0)}
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-text-primary">{league.name}</h3>
+                    <p className="text-xs text-text-secondary">{league.country}</p>
+                  </div>
+                </div>
+                <span className="text-xs font-bold text-vibowy-primary bg-vibowy-primary/10 px-2 py-0.5 rounded">
+                  Уровень {league.tier}
+                </span>
+              </div>
+              <p className="text-text-secondary text-sm mb-4">{league.description || "Футбольная лига"}</p>
+              <Link href={`/leagues/${league.slug}`} className="w-full">
+                <Button variant="outline" className="w-full">Открыть лигу</Button>
+              </Link>
+            </div>
+          </Card>
+        ))}
+        {(leagues?.length || 0) === 0 && (
+          <div className="col-span-full flex flex-col items-center justify-center py-20 text-center">
+            <div className="w-16 h-16 rounded-full bg-vibovy-surface flex items-center justify-center mb-4">
+              <Trophy className="w-8 h-8 text-text-muted" />
+            </div>
+            <h3 className="text-lg font-bold text-text-primary mb-2">Лиги не найдены</h3>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
