@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  /* VIBOVYTM Design System — тёмно-синий первичный цвет (как логотип VIBE™) */
-  --color-background: #0B1120;
+  /* VIBOVYTM Design System — тёмно-синий Transfermarkt-style */
+  --color-background: #0A0F1E;
   --color-foreground: #F8FAFC;
 
-  /* Brand colors — тёмно-синий Transfermarkt-style */
-  --color-vibovy-dark: #0B1120;
+  /* Brand colors — тёмно-синий как логотип VIBE™ */
+  --color-vibovy-dark: #0A0F1E;
   --color-vibovy-primary: #1E3A8A;
   --color-vibovy-primary-hover: #1E40AF;
-  --color-vibovy-surface: #151E2E;
-  --color-vibovy-surface-hover: #1F2A3E;
+  --color-vibovy-surface: #131A2B;
+  --color-vibovy-surface-hover: #1E293B;
   --color-vibowy-accent-green: #00FF00;
   --color-vibowy-accent-red: #FF0000;
 
@@ -52,6 +52,7 @@ body {
   font-family: var(--font-sans);
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -65,7 +66,7 @@ h1, h2, h3, h4, h5, h6 {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #0B1120;
+  background: #0A0F1E;
 }
 ::-webkit-scrollbar-thumb {
   background: #1E293B;
@@ -112,7 +113,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .data-table th {
-  background: #151E2E;
+  background: #131A2B;
   color: #94A3B8;
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -125,17 +126,17 @@ h1, h2, h3, h4, h5, h6 {
 
 .data-table td {
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid #151E2E;
+  border-bottom: 1px solid #131A2B;
   color: #F8FAFC;
 }
 
 .data-table tr:hover td {
-  background: #151E2E;
+  background: #131A2B;
 }
 
 /* Skeleton loader */
 .skeleton {
-  background: linear-gradient(90deg, #151E2E 25%, #1E293B 50%, #151E2E 75%);
+  background: linear-gradient(90deg, #131A2B 25%, #1E293B 50%, #131A2B 75%);
   background-size: 200% 100%;
   animation: skeleton 1.5s infinite;
   border-radius: 0.375rem;
@@ -146,17 +147,21 @@ h1, h2, h3, h4, h5, h6 {
   100% { background-position: -200% 0; }
 }
 
+/* Card hover */
+.card-hover:hover {
+  background: #1E293B;
+  transition: background 0.2s ease;
+}
+
 /* Mobile optimizations */
 @media (max-width: 640px) {
   body {
     font-size: 14px;
   }
-  
   .container {
     padding-left: 1rem;
     padding-right: 1rem;
   }
-  
   h1 { font-size: 1.75rem; }
   h2 { font-size: 1.5rem; }
   h3 { font-size: 1.25rem; }

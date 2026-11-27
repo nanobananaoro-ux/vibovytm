@@ -27,22 +27,22 @@ export default function HomePage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative h-64 lg:h-80 rounded-2xl bg-vibovy-primary/10 border border-vibovy-primary/20 overflow-hidden flex items-center justify-between p-6 lg:p-8 mb-4"
+        className="relative h-64 lg:h-80 rounded-2xl bg-vibovy-primary/10 border border-vibovy-primary/20 overflow-hidden flex flex-col lg:flex-row items-center justify-between p-6 lg:p-8 mb-4"
       >
-        <div className="z-10 flex flex-col lg:flex-row lg:items-start justify-between gap-6 lg:gap-0 w-full">
-          <div className="z-10 flex-1">
+        <div className="z-10 flex-1 flex flex-col lg:flex-row lg:items-start justify-between gap-6 lg:gap-0 w-full">
+          <div className="flex-1">
             <div className="flex items-center gap-2 mb-4">
-              <img src="/logo.png" alt="VIBOVYTM" className="w-8 h-8 rounded-lg object-contain" />
+              <img src="/logo.png" alt="VIBOVYTM" className="w-7 h-7 rounded-lg object-contain" />
               <span className="font-bold text-xl tracking-tight text-text-primary">VIBOVYTM</span>
             </div>
-            <h1 className="text-3xl lg:text-5xl font-bold text-text-primary tracking-tight mb-4 leading-tight">
+            <h1 className="text-3xl lg:text-4xl font-bold text-text-primary tracking-tight mb-3 leading-tight">
               Футбольная аналитика<br />
               <span className="text-vibovy-primary">ФТКЛ и ИРФФ</span>
             </h1>
-            <p className="text-text-secondary text-lg max-w-md">
+            <p className="text-text-secondary text-lg max-w-md mb-6">
               Профессиональная платформа для анализа игроков, клубов, лиг и рыночных стоимостей.
             </p>
-            <div className="flex flex-wrap gap-3 mt-6">
+            <div className="flex flex-wrap gap-3">
               <Link href="/players" className="flex items-center justify-center gap-2 px-6 py-3 bg-vibovy-primary text-white rounded-lg text-sm font-medium hover:bg-vibowy-primary-hover transition-colors w-full sm:w-auto">
                 Игроки <ArrowRight className="w-3 h-3" />
               </Link>
@@ -51,8 +51,8 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="hidden lg:flex items-center justify-center">
-            <img src="/logo.png" alt="VIBOVYTM" className="w-24 h-24 rounded-2xl object-contain opacity-20" />
+          <div className="hidden lg:flex items-center justify-center w-48 h-32 flex-shrink-0">
+            <img src="/logo.png" alt="VIBOVYTM" className="w-full h-full object-contain opacity-15" />
           </div>
         </div>
       </motion.div>
@@ -114,14 +114,14 @@ export default function HomePage() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {topPlayers.map((player) => (
-            <Card key={player.id} className="cursor-pointer group" onClick={() => {}}>
+            <Card key={player.id} className="cursor-pointer group card-hover" onClick={() => {}}>
               <div className="relative h-48 overflow-hidden">
                 <div className="w-full h-full bg-vibovy-surface flex items-center justify-center">
                   <div className="w-16 h-16 rounded-full bg-vibovy-primary/20 flex items-center justify-center text-vibovy-primary font-bold text-2xl">
                     {player.full_name.charAt(0)}
                   </div>
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-vibovy-dark/90 via-transparent to-transparent"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-4">
                   <div className="flex items-center justify-between">
                     <div>
@@ -178,7 +178,7 @@ export default function HomePage() {
           <div className="p-4">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {topClubs.map((club) => (
-                <Card key={club.id} className="cursor-pointer group" onClick={() => {}}>
+                <Card key={club.id} className="cursor-pointer group card-hover" onClick={() => {}}>
                   <div className="h-32 overflow-hidden border-b border-vibovy-border">
                     <div className="w-full h-full bg-vibovy-primary/10 flex items-center justify-center">
                       <div className="w-20 h-20 rounded-full bg-vibovy-primary flex items-center justify-center text-white font-bold text-3xl">
@@ -258,7 +258,7 @@ export default function HomePage() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
-            <Card key={i} className="cursor-pointer group" onClick={() => {}}>
+            <Card key={i} className="cursor-pointer group card-hover" onClick={() => {}}>
               <div className="h-40 overflow-hidden mb-4">
                 <div className="w-full h-full bg-vibovy-primary/10 flex items-center justify-center">
                   <Mail className="w-12 h-12 text-vibovy-primary/30" />

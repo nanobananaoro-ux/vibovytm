@@ -19,8 +19,8 @@ const NAV_LINKS = [
   { href: "/clubs", label: "Клубы", icon: Users },
   { href: "/leagues", label: "Лиги", icon: Trophy },
   { href: "/compare", label: "Сравнение", icon: TrendingUp },
-  { href: "/market", label: "Рыночные Kosten", icon: TrendingUp },
-  { href: "/news", label: "Медиа", icon: TrendingUp },
+  { href: "/market", label: "Рынок", icon: TrendingUp },
+  { href: "/news", label: "Новости", icon: TrendingUp },
 ];
 
 export function Navbar() {
@@ -29,13 +29,13 @@ export function Navbar() {
   return (
     <nav className="sticky top-0 z-50 border-b border-vibovy-border bg-vibovy-dark/95 backdrop-blur-md">
       <div className="flex items-center justify-between h-16 px-4 lg:px-8">
-        {/* Logo */}
+        {/* Logo — маленький, слева */}
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2">
             <img
               src="/logo.png"
               alt="VIBOVYTM"
-              className="w-9 h-9 rounded-lg object-contain"
+              className="w-8 h-8 rounded-lg object-contain"
             />
             <span className="font-bold text-xl tracking-tight text-text-primary">
               VIBOVYTM
@@ -44,12 +44,12 @@ export function Navbar() {
         </div>
 
         {/* Desktop nav */}
-        <div className="hidden lg:flex items-center gap-8 text-sm font-medium">
+        <div className="hidden lg:flex items-center gap-6 text-sm font-medium">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="flex items-center gap-2 text-text-secondary hover:text-vibovy-primary transition-colors"
+              className="flex items-center gap-2 text-text-secondary hover:text-vibowy-primary transition-colors"
             >
               <link.icon className="w-4 h-4" />
               {link.label}
