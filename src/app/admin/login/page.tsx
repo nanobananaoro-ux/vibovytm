@@ -28,7 +28,7 @@ export default function AdminLoginPage() {
         router.push("/admin");
       }, 500);
     } else {
-      setError("Неверный код доступа. Попробуйте: Hoks228");
+      setError("Неверный код доступа");
       setLoading(false);
     }
   };
@@ -50,7 +50,7 @@ export default function AdminLoginPage() {
               type="text"
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              placeholder="Hoks228"
+              placeholder="Введите код"
               disabled={loading}
             />
           </div>
@@ -63,11 +63,6 @@ export default function AdminLoginPage() {
             {loading ? "Вход..." : "Войти"}
           </Button>
         </form>
-        <div className="mt-6 pt-6 border-t border-vibovy-border">
-          <p className="text-xs text-text-muted text-center">
-            Код доступа: <span className="font-mono text-vibowy-primary">Hoks228</span>
-          </p>
-        </div>
       </Card>
     </div>
   );

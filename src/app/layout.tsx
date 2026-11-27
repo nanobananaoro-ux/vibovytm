@@ -1,30 +1,20 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-
-export const metadata: Metadata = {
-  title: "VIBOVYTM — Футбольная аналитика ФТКЛ и ИРФФ",
-  description: "Профессиональная футбольная аналитическая платформа. Игроки, клубы, лиги, рыночные стоимости, трансферы и статистика.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://vibovytm.vercel.app"),
-  openGraph: {
-    title: "VIBOVYTM — Футбольная аналитика ФТКЛ и ИРФФ",
-    description: "Профессиональная футбольная аналитическая платформа для сообществ ФТКЛ и ИРФФ",
-    type: "website",
-    locale: "ru_RU",
-    siteName: "VIBOVYTM",
-  },
+export const metadata = {
+  title: "VIBOVYTM — Футбольная аналитика",
 };
 
-export default function RootLayout({
+export default function PublicLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ru" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
-    </html>
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-grow pt-4 pb-8 px-4 sm:px-6 lg:px-8">{children}</main>
+      <Footer />
+    </div>
   );
 }
